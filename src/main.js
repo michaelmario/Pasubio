@@ -5,6 +5,7 @@ import  './firebase'
 import {fA} from './firebase'
 import { BootstrapVue, IconsPlugin,BootstrapVueIcons} from 'bootstrap-vue';
 
+import Vue2Editor from "vue2-editor";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import jQuery from 'jquery';
@@ -30,6 +31,10 @@ import Swal from 'sweetalert2';
 
 window.Swal = Swal;
 
+Vue.use(Vue2Editor);
+
+
+
 Vue.config.productionTip = false
 let app;
 
@@ -42,6 +47,7 @@ fA().onAuthStateChanged(function(user) {
   },
   render: h => h(App),
  router,
+ mode: 'history', 
  user,
  }).$mount('#app')
  }

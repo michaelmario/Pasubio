@@ -88,18 +88,28 @@
               <div class="form-group">
                 <div class="container">
                   <div class="row">
-                    <div class="col-md-12  mt-2 mb-2">
-                      {{autput}}
+                    <div class="col-md-12 mt-2 mb-2">
+                      <div
+                        class="bg-success text-white p-3"
+                        v-if="autput === true"
+                      >
+                        <span class="text-white">{{ autput }}</span>
+                      </div>
+                      <div v-else class="p-3">
+                        <span class="text-dark">{{ autput }}</span>
+                      </div>
                     </div>
                     <div class="col mt-2 mb-2">
-                      <button class="col-6 btn btn-secondary btn-sm float-left">
+                      <button class="col-6 btn btn-secondary btn-sm float-left" @click="resetInput">
                         Reset
                       </button>
                     </div>
                     <div class="col mt-2 mb-2">
                       <button
                         class="col-6 btn btn-dark btn-sm float-right"
-                        @click="onSubmit" :class="{allow:allow}">
+                        @click="onSubmit"
+                        :class="{ allow: allow }"
+                      >
                         Submit
                       </button>
                     </div>
@@ -113,40 +123,58 @@
     </b-row>
   </div>
 </template>
-
 <script>
 import { fA, db } from "../firebase";
-import  Swal from "sweetalert2";
+import Swal from "sweetalert2";
+const Toast = Swal.mixin({
+  toast: true,
+  position: "center-end",
+  showConfirmButton: false,
+  timer: 4000,
+  timerProgressBar: true,
+  onOpen: (toast) => {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
+  },
+});
 export default {
   name: "Contact",
   data() {
     return {
       reg: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
       data: {},
-      autput:"",
+      autput: null,
       allow: false,
     };
   },
   methods: {
-     cleanInput(){
-     if (this.email) {
-         let notAllow = /[< $ >``{}''""^ ]/gi;
-        if (this.reg.test(this.email)) {
-           this.autput = "Merci le Email est bien formate";
+    cleanInput() {
+      if (this.data.email) {
+        let notAllow = /[< $ >``{}''""^ ]/gi;
+        if (this.reg.test(this.data.email)) {
+          this.autput = "Email is well-formatted you can proceed";
           this.allow = true;
-        }else if (this.email.search(notAllow) > -1) {
-           this.email = this.email.replace(notAllow, "");
-          this.autput = "Les Caractere speciaux sont interdits !";
+        } else if (this.data.email.search(notAllow) > -1) {
+          this.data.email = this.data.email.replace(notAllow, "");
+          this.autput = "Special characters are prohibited!";
           this.allow = false;
-        }else{
-           this.autput = "Le Email n'est pas bien formate";
+        } else {
+          this.autput = "The Email is not well formatted";
           this.allow = false;
         }
-     }
+      }
+    },
+    resetInput(evt){
+       evt.preventDefault();
+     this.data.email = null ;
+        this.data.date = null ;
+        this.data.adress = null;
+        this.data.message = null;
+          this.autput = null;
     },
     onSubmit(evt) {
       evt.preventDefault();
-       if (
+      if (
         this.data.email == null ||
         this.data.date == null ||
         this.data.adress == null ||
@@ -166,33 +194,33 @@ export default {
               message: this.data.message,
             };
             db.collection("message")
-              .add(neweMassage).then(()=>{
+              .add(neweMassage)
+              .then(() => {
                 this.data.email = null;
-            this.data.name = null;
-            this.data.message = null;
-            this.autput = null;
-              Toast.fire({
-              icon: 'success',
-             title: "Votre Message a bien etait envoyer"
-          });      
+                this.data.name = null;
+                this.data.message = null;
+                this.autput = "Your message has been sent";
+                Toast.fire({
+                  icon: "success",
+                  title: "Your message has been sent",
+                });
               })
               .catch((err) => {
                 console.log(err);
-              });        
+              });
           })
           .catch((err) => {
             console.log(err);
           });
       }
-     
     },
 
     onReset(evt) {
       evt.preventDefault();
-      this.email = "",
-      this.date = "",
-     this.adress = "",
-     this.message = ""
+      (this.email = ""),
+        (this.date = ""),
+        (this.adress = ""),
+        (this.message = "");
     },
   },
 };

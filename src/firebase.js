@@ -16,8 +16,10 @@ const config = {
    // Initialize Firebase
    const fb = firebase.initializeApp(config);
    const fm = firebase.messaging();
+   const timestamp = firebase.firestore.FieldValue.serverTimestamp;
  
     const db = firebase.firestore();
     const fA = firebase.auth;
+    const fS = firebase.storage();
 
- export {fb,db,fA,fm}
+ export {fb,db,fA,fm,fS ,timestamp}

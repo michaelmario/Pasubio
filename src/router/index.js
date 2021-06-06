@@ -17,10 +17,18 @@ const routes = [
     name: "Contact",
     component: Contact,
   },
+
   {
     path: "/blog",
     name: "Blog",
     component: Blog,
+   
+  },
+  {
+    path: "/edit",
+    component: () => 
+    import(/* webpackChunkName: "edit" */ '@/views/Edit'), 
+    
   },
   {
     path: "/about",
@@ -31,6 +39,14 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
+  { 
+    path: '/connexion',  
+     component: () => 
+       import(/* webpackChunkName: "connexion" */ '@/views/connexion'), 
+       meta: {
+      requiresGuest: true
+    }
+   },  
 ];
 
 const router = new VueRouter({
