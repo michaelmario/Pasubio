@@ -1,15 +1,14 @@
 <template >
   <div id="colorlib-page">
     <section class="ftco-section ftco-no-pt ftco-no-pb">     
-        <div class="row d-flex">
+        <div class="row">
           <div class="col-xl-8  px-md-5">
             <div class="blog-card-wrap">
               <div class="blog-cards container">
-                <div class="toggle-edit">
+                <div class="toggle-edit" :class="{active:active }">
                   <span>Toggle Editing Post</span>
                   <input type="checkbox" v-model="editpost" />
-                </div>
-                <div class="userAdminContainer" v-if="editpost">
+                  </div>               
                 <div v-for="blog in blogPosts" :key="blog.id">
                   <div class="blog-card" :id="blog.id">
                     <div v-show="editpost" class="icons">
@@ -33,7 +32,7 @@
                     </div>
                   </div>                  
                 </div> 
-                </div>              
+             
               </div>              
             </div>             
           </div>
@@ -115,12 +114,18 @@
                 data-href="https://www.facebook.com/profile.php?id=100068592489163"
                 data-width="380"
                 data-hide-cover="false"
-                data-show-facepile="false"
-              ></div>
-               <span>
-            <a href="/connexion"  type="submit" class="w3-bar-item w3-button">
-            <i class="fa fa-sign-in-alt"></i> CONNEXION</a>
-          </span>
+                data-show-facepile="false">
+              </div>
+              <div class="d-flex">
+               <p>
+                 <a href="/connexion"  type="submit" class="btn btn-dark registratioBtn">
+                  <i class="fa fa-sign-in-alt"></i> CONNEXION</a>
+               </p>
+                <p>
+                 <a href="/"  type="button" class="btn btn-dark" @click='logOut'>
+                  <i class="fa fa-sign-in-alt"></i> Logout</a>
+               </p>
+              </div>
             </div>            
           </div>
         </div>     
@@ -132,14 +137,19 @@ import Arrow from "../assets/Icons/arrow-right-light.svg";
 import Edit from "../assets/Icons/edit-regular.svg";
 import Delete from "../assets/Icons/trash-regular.svg";
 import moment from 'moment';
-import { db } from "../firebase";
+import { db, fA} from "../firebase";
 export default {
   name: "Blog",
   components: { Arrow ,Edit, Delete },
   data() {
     return {
       blogPosts: [],
-      editPost:false,
+      editpost:false,
+      currentUser:[],
+      active:false,
+       isLoggedIn: false,
+       displayName:"",
+       email:"",
     };
   },
 
@@ -150,6 +160,12 @@ export default {
     editBlog(){
       window.location = "/edit";
     },
+    logOut() {
+      fA().signOut().then(() => {
+       this.$router.go(); 
+       this.isLoggedIn = false;
+    });
+  },
     getPosts() {
       let vm = this;
       db.collection("blogPosts")
@@ -197,13 +213,17 @@ export default {
   },
   created() {
     this.getPosts();
-    if(this.editPost === false){
-      document.querySelector('.userAdminContainer').style.display = "none";
-    }else{
-      document.querySelector('.userAdminContainer').style.display = "block";
-    }
-
-  },
+     if (fA().currentUser) {
+      this.isLoggedIn = true;
+      this.currentUser = fA().currentUser;
+      this.displayName = fA().currentUser.displayName;
+      this.email = fA().currentUser.email;  
+       if(this.email === "marioachil@gmail.com"){
+         this.active = true;
+          this.editpost = true; 
+           }    
+     }  
+       },
   
  computed:{}
  
@@ -328,7 +348,6 @@ export default {
     margin-bottom: 32px;
   }
 }
-
 .updates {
   .container {
     padding: 100px 25px;
@@ -372,6 +391,7 @@ export default {
     position: absolute;
     top: -70px;
     right: 0;
+    display:none;
 
     span {
       margin-right: 16px;
@@ -410,5 +430,12 @@ export default {
       left: 52px;
     }
   }
+  .toggle-edit.active{
+    display: block;
+  }
+}
+.registratioBtn{
+ margin-left:10px;
+ margin-right:10px;
 }
 </style>

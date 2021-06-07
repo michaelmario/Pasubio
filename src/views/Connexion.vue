@@ -20,7 +20,7 @@
             <h1 class="w3-xlarge w3-text-green">
               <b>SE CONNECTER.</b>
             </h1>
-            <hr style="width:50px;border:5px solid green" class="w3-round" />
+            <hr style="width:50px;border:5px solid green" class="" />
             
             <form action="" target="_blank">
               <div class="w3-section w3-padding">
@@ -48,7 +48,7 @@
 import {fA} from '../firebase';
 import * as firebaseui from 'firebaseui'
 export default {
-  name: 'connexion',
+  name: 'Connexion',
   data(){
     return{
       active:false
@@ -143,13 +143,13 @@ export default {
     z-index:4; 
    
 }
-#signin.active{
+/*#signin.active{
     display:block;
      position: absolute; 
     z-index:4;
   
    
-}
+}*/
 li.firebaseui-list-item{
   list-style: none !important;
 }

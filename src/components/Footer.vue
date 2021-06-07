@@ -9,7 +9,10 @@
            <p>Name : Louise Marie Cotte </p>
           
            <p> Email: <a href="mailto:achille.louisemarie64@gmail.com" rel="noopener" class="textwarning">Louise Marie</a> </p> 
-           <p>Phone number:+230-58 65 34 56 </p>            
+           <p>Phone number:+230-58 65 34 56 </p> 
+           <p><router-link to="/Termsofservice" class="nav-link">
+                  <i class="fas fa-tasks"></i> Terms of Service
+                </router-link></p>
           </div>
         </div>
          <div class="col-md-6">

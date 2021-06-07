@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Contact from "../views/Contact.vue";
 import Blog from "../views/Blog.vue";
+import Termsofservice from "../views/Termsofservice.vue";
+import Connexion from "../views/Connexion.vue";
 
 Vue.use(VueRouter);
 
@@ -16,6 +18,11 @@ const routes = [
     path: "/contact",
     name: "Contact",
     component: Contact,
+  },
+  {
+    path: "/Connexion",
+    name: "Connexion",
+    component:Connexion,
   },
 
   {
@@ -40,13 +47,12 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
   { 
-    path: '/connexion',  
-     component: () => 
-       import(/* webpackChunkName: "connexion" */ '@/views/connexion'), 
-       meta: {
-      requiresGuest: true
-    }
+    path: '/Termsofservice',
+    name:"Termsofservice",  
+    component: Termsofservice, 
+      
    },  
+  
 ];
 
 const router = new VueRouter({

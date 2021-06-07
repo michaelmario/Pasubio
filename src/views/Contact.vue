@@ -24,6 +24,7 @@
             <div class="col-md-12">
               <p><strong>Email:</strong>achille.louisemarie64@gmail.com</p>
               <p><strong>Mobile:</strong>+230-58 65 34 56</p>
+              <p>Business Registration number : 11800916</p>
             </div>
           </b-card-text>
 
